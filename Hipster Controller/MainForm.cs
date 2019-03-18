@@ -26,9 +26,13 @@ namespace Hipster_Controller
                 Console.WriteLine("Name -> "+ name);
             }
 
-            var control = new Hipster();
-            control.Dock = DockStyle.Fill;
-            tabPage1.Controls.Add(control);
+            AddAgg("First");
+        }
+
+        private void tabClick(object sender, EventArgs e)
+        {
+            Console.WriteLine("clicked " + sender);
+            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
         }
 
         private void AddAggButton_Click(object sender, EventArgs e)
@@ -38,15 +42,18 @@ namespace Hipster_Controller
 
             if(result == DialogResult.OK)
             {
-                var page = new TabPage(popup.TabNameText);
-                page.BackColor = Color.Aquamarine;
-                tabControl1.TabPages.Add(page);
+                AddAgg(popup.TabNameText);
             }
         }
 
         private void AddAgg(string label)
         {
             var page = new TabPage(label);
+            var control = new Hipster();
+            control.Dock = DockStyle.Fill;
+            control.CloseClick += tabClick;
+            page.Controls.Add(control);
+            page.ImageIndex = 0;
             tabControl1.TabPages.Add(page);
         }
     }

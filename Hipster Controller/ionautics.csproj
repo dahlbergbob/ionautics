@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>Hipster_Controller</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ionautics</RootNamespace>
     <AssemblyName>Hipster Controller</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -27,6 +27,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <StartupObject>ionautics.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +63,13 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Reactive.Linq" />
+    <Reference Include="System.Reactive.Core" />
+    <Reference Include="System.Reactive.Interfaces" />
+    <Reference Include="System.Reactive.Windows.Forms" />
+    <Reference Include="System.Reactive.Windows.Threading" />
+    <Reference Include="System.Reactive.Providers" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddDialog.cs">
@@ -121,6 +129,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="core\App.cs" />
+    <Compile Include="core\Runner.cs" />
+    <Compile Include="io\Unit.cs" />
+    <Compile Include="io\Port.cs" />
+    <Compile Include="io\IPort.cs" />
+    <Compile Include="io\Command.cs" />
+    <Compile Include="units\Parameter.cs" />
+    <Compile Include="units\Type.cs" />
+    <Compile Include="units\UnitConnector.cs" />
+    <Compile Include="view\Aggregate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -140,6 +158,12 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\baseline_close_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="core\" />
+    <Folder Include="io\" />
+    <Folder Include="units\" />
+    <Folder Include="view\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

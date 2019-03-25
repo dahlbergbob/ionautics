@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Hipster_Controller.Properties
+namespace ionautics.Properties
 {
 
 

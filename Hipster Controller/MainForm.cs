@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Hipster_Controller
+namespace ionautics
 {
     public partial class Controller : Form
     {

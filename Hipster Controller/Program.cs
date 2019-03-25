@@ -4,13 +4,14 @@ using System.IO.Ports;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using ionautics;
 
 namespace Hipster_Controller
 {
     static class Program
     {
-        static Thread reader;
-        static SerialPort port;
+        //static Thread reader;
+        //static SerialPort port;
 
         /// <summary>
         /// The main entry point for the application.
@@ -23,7 +24,7 @@ namespace Hipster_Controller
             Application.Run(new Controller());
 
             return;
-
+            /*
             var ports = SerialPort.GetPortNames();
             foreach (string p in ports) {
                 Console.WriteLine("Port -> "+ p);
@@ -50,8 +51,10 @@ namespace Hipster_Controller
             port.WriteLine("0@2145?");
 
             Console.WriteLine("Result -> " + port.ReadLine());
+            */           
         }
 
+        /*
         private static void Port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             Console.WriteLine("Data received - " + sender);
@@ -75,5 +78,6 @@ namespace Hipster_Controller
                 port.Close();
             }
         }
+        */
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Hipster_Controller
+﻿namespace ionautics
 {
     partial class Tab
     {
@@ -46,7 +46,7 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.InitialImage = global::Hipster_Controller.Properties.Resources.baseline_close_black_18dp;
+            this.pictureBox1.InitialImage = global::ionautics.Properties.Resources.baseline_close_black_18dp;
             this.pictureBox1.Location = new System.Drawing.Point(118, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(51, 50);

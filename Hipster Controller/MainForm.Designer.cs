@@ -1,4 +1,4 @@
-﻿namespace Hipster_Controller
+﻿namespace ionautics
 {
     partial class Controller
     {

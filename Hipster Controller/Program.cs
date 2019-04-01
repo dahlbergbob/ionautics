@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ionautics;
+using ionautics.core;
 
 namespace Hipster_Controller
 {
@@ -19,11 +20,16 @@ namespace Hipster_Controller
         [STAThread]
         static void Main()
         {
+            if(SerialPort.GetPortNames().Count() > 0) {
+                App.ports = new PortModule();
+            }
+            else {
+                App.ports = new PortModule(2);
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Controller());
-
-            return;
             /*
             var ports = SerialPort.GetPortNames();
             foreach (string p in ports) {

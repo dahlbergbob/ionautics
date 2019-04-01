@@ -5,9 +5,9 @@ using ionautics.units;
 
 namespace ionautics.view
 {
-    public class Aggregate
+    public class Aggregate : Unit
     {
-        private List<Parameter> _parameters = new List<Parameter> {
+        private readonly List<Parameter> _parameters = new List<Parameter> {
             new Parameter(1, "Pulse On/Off", 1, 0, "Pulse", true, 0),
             new Parameter(2, "Pulse Source", 1, 0, "Source", true, 0),
             new Parameter(3, "Interlock status", 1, 0, "Interlock", false, 0),
@@ -29,23 +29,13 @@ namespace ionautics.view
             new Parameter(33, "Peak current value", 0, 150, "A", false, 0),
             new Parameter(34, "Pulse charge value", 0, 3000, "μC", false, 0),
         };
-
-        public string name { get; set; }
-        public bool active { get; set; }
+        
         public string header { get; }
-        public IPort port { get; }
 
-        public Aggregate(string tabName, IPort port)
-        {
-            header = tabName;
-            active = false;
-            if (this.port != null) {
-                this.port = port;
-            }
+        public Aggregate(string tab, IPort port, int address) : base(tab, port, address) {
+            header = tab;
+            Parameters.AddRange(_parameters);
         }
-
-        public List<Parameter> parameters => _parameters;
-
     }
 
 }

@@ -1,47 +1,35 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
-using System.Reactive.PlatformServices;
 using System.Collections.Generic;
 using ionautics.io;
-using System.Threading;
+using System.Linq;
 
 namespace ionautics.core
 {
     public class Runner
     {
         private IDisposable _disposable;
-        private List<Unit> _units;
 
-        public Runner()
-        {
+        public Runner() {
         }
 
-        public void Start(List<Unit> activeUnits, IObserver<long> observer)
-        {
+        public void Start(List<Unit> activeUnits, IObserver<List<Unit>> observer) {
             _disposable?.Dispose();
-            _units = activeUnits;
             _disposable = Observable.Interval(TimeSpan.FromSeconds(1))
-                .Do(i => Print("Running on"))
-                .Do(i => Poll())
-                .ObserveOn(CurrentThreadScheduler.Instance)
+                .Select(l => Poll(activeUnits))
                 .Subscribe(observer);
         }
 
-        private void Print(string from) {
-            Console.WriteLine(from +" -> "+ System.Threading.Thread.CurrentThread.Name);
+        private List<Unit> Poll(List<Unit> activeUnits) {
+            Console.WriteLine("Poll -> " + activeUnits.Count());
+            activeUnits.ForEach(unit => {
+                unit.Measure();
+            });
+            return activeUnits;
         }
 
-        private void Poll() {
-            /*
-            _units.ForEach( it =>
-                it
-            )
-            */
-        }
-
-        public void Stop()
-        {
+        public void Stop() {
             _disposable?.Dispose();
             _disposable = null;
         }

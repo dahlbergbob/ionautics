@@ -40,8 +40,10 @@
             this.button2 = new System.Windows.Forms.Button();
             this.AddAggButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.runToggle = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,9 +106,9 @@
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Controls.Add(this.runToggle);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(467, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -166,6 +168,16 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "baseline_close_black_18dp.png");
             // 
+            // runToggle
+            // 
+            this.runToggle.Location = new System.Drawing.Point(3, 3);
+            this.runToggle.Name = "runToggle";
+            this.runToggle.Size = new System.Drawing.Size(120, 50);
+            this.runToggle.TabIndex = 0;
+            this.runToggle.Text = "start";
+            this.runToggle.UseVisualStyleBackColor = true;
+            this.runToggle.Click += new System.EventHandler(this.runToggle_Click);
+            // 
             // Controller
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -181,6 +193,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
@@ -200,6 +213,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button AddAggButton;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Button runToggle;
     }
 }
 

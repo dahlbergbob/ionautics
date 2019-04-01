@@ -7,11 +7,20 @@ namespace ionautics.io {
 
         private SerialPort _port;
 
+        public string Name {
+            get => _port.PortName;
+            set => _port.PortName = value;
+        }
+
+        public int BaudRate {
+            get => _port.BaudRate;
+        }
+
         public Port(SerialPort port) {
             _port = port;
             _port.NewLine = "\n";
-            _port.ReadTimeout = 50;
-            _port.WriteTimeout = 50;
+            _port.ReadTimeout = 500;
+            _port.WriteTimeout = 500;
             _port.Encoding = System.Text.Encoding.ASCII;
         }
 
@@ -38,12 +47,10 @@ namespace ionautics.io {
         }
 
         private Command HandleError(int address, TimeoutException e) {
-            Command c;
-            c.address = address;
-            c.value = -1;
-            c.parameter = -1;
-            c.error = true;
-            c.message = e.Message;
+            Command c = new Command(address, -1, -1) {
+                error = true,
+                message = e.Message
+            };
             return c;
         }
 

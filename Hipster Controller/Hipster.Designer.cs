@@ -80,6 +80,7 @@
             this.udcWrite = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.activeToggle = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -96,6 +97,7 @@
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.activeToggle, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -669,11 +671,24 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Location = new System.Drawing.Point(3, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 42);
+            this.button1.Size = new System.Drawing.Size(120, 58);
             this.button1.TabIndex = 2;
             this.button1.Text = "Close";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // activeToggle
+            // 
+            this.activeToggle.AutoSize = true;
+            this.activeToggle.Checked = true;
+            this.activeToggle.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.activeToggle.Location = new System.Drawing.Point(832, 3);
+            this.activeToggle.Name = "activeToggle";
+            this.activeToggle.Size = new System.Drawing.Size(131, 36);
+            this.activeToggle.TabIndex = 3;
+            this.activeToggle.Text = "Active";
+            this.activeToggle.UseVisualStyleBackColor = true;
+            this.activeToggle.CheckedChanged += new System.EventHandler(this.activeToggle_CheckedChanged);
             // 
             // Hipster
             // 
@@ -751,5 +766,6 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox activeToggle;
     }
 }

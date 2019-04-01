@@ -1,8 +1,9 @@
-﻿using System;
-namespace ionautics.io
+﻿namespace ionautics.io
 {
     public interface IPort
     {
+        string Name { get; }
+        int BaudRate { get; }
         bool IsOpen();
         bool Open();
         void Close();

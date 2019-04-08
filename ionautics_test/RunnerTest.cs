@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using ionautics.core;
 using ionautics.io;
-using NUnit.Framework;
 
 namespace ionautics_test
 {
+    /*
     [TestFixture()]
     public class RunnerTest : IObserver<long>
     {
@@ -44,4 +44,5 @@ namespace ionautics_test
             Printer(0);
         }
     }
+    */
 }

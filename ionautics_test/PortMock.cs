@@ -6,6 +6,10 @@ namespace ionautics_test {
 
         private bool _open = false;
 
+        public string Name => throw new System.NotImplementedException();
+
+        public int BaudRate => throw new System.NotImplementedException();
+
         public bool IsOpen() => _open;
 
         public Command Read(Command parameter) {

@@ -22,11 +22,12 @@ namespace ionautics.core
         }
 
         private List<Unit> Poll(List<Unit> activeUnits) {
-            Console.WriteLine("Poll -> " + activeUnits.Count());
-            activeUnits.ForEach(unit => {
+            var stillActive = activeUnits.Where(u => u.IsActive).ToList();
+            Console.WriteLine("Poll -> " + stillActive.Count());
+            stillActive.ForEach(unit => {
                 unit.Measure();
             });
-            return activeUnits;
+            return stillActive;
         }
 
         public void Stop() {

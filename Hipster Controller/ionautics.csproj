@@ -52,6 +52,9 @@
     <StartupObject>Hipster_Controller.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
@@ -67,6 +70,7 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -106,8 +110,20 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Plot.Designer.cs">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sync.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sync.Designer.cs">
+      <DependentUpon>Sync.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,6 +139,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Plot.resx">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -133,6 +152,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Sync.resx">
+      <DependentUpon>Sync.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tab.resx">
       <DependentUpon>Tab.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,6 +178,8 @@
     <Compile Include="units\Parameter.cs" />
     <Compile Include="units\Type.cs" />
     <Compile Include="units\UnitConnector.cs" />
+    <Compile Include="view\ICloseable.cs" />
+    <Compile Include="view\SyncAggregate.cs" />
     <Compile Include="view\Aggregate.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +200,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\baseline_close_black_18dp.png" />
+    <None Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

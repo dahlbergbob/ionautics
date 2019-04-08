@@ -19,8 +19,9 @@ namespace ionautics.core
         }
 
         public PortModule(int numberOfFakes) {
+            var rnd = new Random().Next(1,4);
             for(int i = 0; i < numberOfFakes; i++) {
-                var name = "COM" + (i+1);
+                var name = "COM" + (i+rnd);
                 var p = new MockPort(name, 38400);
                 _ports.Add(p);
             }
@@ -44,12 +45,28 @@ namespace ionautics.core
         }
 
         internal bool needsUpdate(string name, int baudrate) {
-            return GetPort(name, baudrate) == null;
+            return GetPort(name, baudrate, true) == null;
         }
 
-        internal IPort GetPort(string name, int baudrate) {
+        internal void refresh() {
+            if (serial) {
+                var current = SerialPort.GetPortNames();
+                var stored = GetNames();
+                if (current.Count() == stored.Count()) {
+                    if (current.All(p => stored.Contains(p))) {
+                        return;
+                    }
+                }
+                App.LogError("We need to update our ports!");
+            }
+        }
+
+        internal IPort GetPort(string name, int baudrate, bool allowNull) {
             var port = _ports.FirstOrDefault(p => p.Name == name && p.BaudRate == baudrate);
-            return port == null ? _ports[0] : port;
+            if(allowNull) {
+                return port;
+            }
+            return port ?? _ports[0];
         }
     }
 

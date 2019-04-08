@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ionautics.io;
 using ionautics.units;
 
@@ -31,10 +32,11 @@ namespace ionautics.view
         };
         
         public string header { get; }
+        public override UnitType type => UnitType.AGG;
 
         public Aggregate(string tab, IPort port, int address) : base(tab, port, address) {
             header = tab;
-            Parameters.AddRange(_parameters);
+            Parameters = _parameters.ToDictionary(l => l.id, l => l);
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 
 namespace ionautics.io
 {
@@ -25,12 +26,27 @@ namespace ionautics.io
             return true;
         }
 
+        private Command errorCmd(Command c, string message) {
+            c.error = true;
+            c.message = message;
+            return c;
+        }
+
         public Command Read(Command parameter) {
-            parameter.value = rand.Next();
+            if (parameter.parameter > 3) { 
+                parameter.value = rand.Next(1000);
+                if(parameter.value > 990) {
+                    parameter = errorCmd(parameter, "Invalid Parameter");
+                }
+            }
             return parameter;
         }
 
         public Command Write(Command values) {
+            var n = rand.Next(100);
+            if (n == 23) {
+                values = errorCmd(values, "Invalid Message");
+            }
             return values;
         }
     }

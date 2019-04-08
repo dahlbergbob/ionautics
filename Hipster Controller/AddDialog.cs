@@ -38,6 +38,8 @@ namespace ionautics
             bpsBox.DataSource = bps;
 
             portNameBox.SelectedIndex = 0;
+
+            addressNumber.Text = "0";
         }
 
         private void OkButton_Click(object sender, EventArgs e) {

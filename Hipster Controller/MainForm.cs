@@ -6,66 +6,103 @@ using System.Reactive.Linq;
 using System.Linq;
 using ionautics.io;
 using ionautics.view;
+using System.IO;
 
 namespace ionautics
 {
     public partial class Controller : Form, IObserver<bool>
     {
-        public Controller()
-        {
+        public Controller() {
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            Console.WriteLine(SerialPort.GetPortNames());
-            foreach(string name in SerialPort.GetPortNames())
-            {
-                Console.WriteLine("Name -> "+ name);
-            }
-
-            //AddAgg("First", 0);
+        private void MainForm_Load(object sender, EventArgs e) {
             App.running
-                .SubscribeOn(this)
+                .ObserveOn(this)
                 .Subscribe(this);
+
+            App.unitCount
+                .ObserveOn(this)
+                .Subscribe(pair => {
+                    runToggle.Enabled = pair.Item1 > 0;
+                    activeTabs.Text = $"There are {pair.Item1} out of {pair.Item2} active units.";
+                });
+
+            App.error
+                .Skip(1)
+                .ObserveOn(this)
+                .Subscribe(msg => {
+                    MessageBox.Show(msg, "An Error Occured", MessageBoxButtons.OK);
+                });
+
+
+            AddAgg("Sync", 0, App.ports.GetPort("", 0, false), false);
+            AddAgg("Agg", 1, App.ports.GetPort("", 0, false), true);
+            AddGraph();
         }
 
-        private void tabClick(object sender, EventArgs e)
-        {
+        private void closeTabClick(object sender, EventArgs e) {
             Console.WriteLine("clicked " + sender);
+            var aggView = tabControl1.SelectedTab.Controls.OfType<IRunningControl>().FirstOrDefault();
+            App.RemoveUnit(aggView.getUnit());
             tabControl1.TabPages.Remove(tabControl1.SelectedTab);
         }
 
-        private void AddAggButton_Click(object sender, EventArgs e)
-        {
+        private void AddAggButton_Click(object sender, EventArgs e) {
+
+            App.refreshPorts();
             var popup = new AddDialog();
             var result = popup.ShowDialog();
 
             if(result == DialogResult.OK) {
-                var port = App.ports.GetPort(popup.PortName, popup.BaudRate);
-                AddAgg(popup.TabNameText, popup.Address, port);
+                var port = App.ports.GetPort(popup.PortName, popup.BaudRate, false);
+                bool isHipster = popup.IsHipster;
+                AddAgg(popup.TabNameText, popup.Address, port, isHipster);
             }
         }
 
-        private void AddAgg(string label, int address, IPort port)
+        private void AddAgg(string label, int address, IPort port, bool isHipster)
         {
-            
-            //port.WriteLine("0@20:4/24");
-            //Console.WriteLine(port.ReadLine());
+            Unit unit;
+            if (isHipster) {
+                unit = new Aggregate(label, port, address);
+            }
+            else {
+                unit = new SyncAggregate(label, port, address);
+            }
+            unit.IsActive = true;
+            AddAgg(unit);
+        }
 
-            var agg = new Aggregate(label, port, address);
-            var page = new TabPage(label);
-            var control = new Hipster(agg);
+        private void AddAgg(Unit unit) {
+            var page = new TabPage(unit.tab);
+            Control control;
+
+            if (unit.type == UnitType.AGG) {
+                control = new Hipster(unit);
+            }
+            else {
+                control = new Sync(unit);
+            }
+
             control.Dock = DockStyle.Fill;
-            control.CloseClick += tabClick;
+            ((ICloseable)control).CloseClick += closeTabClick;
             page.Controls.Add(control);
             page.ImageIndex = 0;
             tabControl1.TabPages.Add(page);
-            App.units.Add(agg);
+            App.AddUnit(unit);
         }
 
-        private void runToggle_Click(object sender, EventArgs e)
-        {
+        private void AddGraph() {
+            var page = new TabPage("Graph");
+            Control control = new Plot();
+            control.Dock = DockStyle.Fill;
+            page.Controls.Add(control);
+            page.ImageIndex = 0;
+            tabControl1.TabPages.Add(page);
+        }
+
+        private void runToggle_Click(object sender, EventArgs e) {
             if(App.IsRunning()) {
                 App.Stop();
             }
@@ -94,26 +131,91 @@ namespace ionautics
         }
 
         private void disableWhileRunning() {
-            /*
-            var result = port.Write(new Command(0, 1, 1));
-            Console.WriteLine(result);
-            */
+
             foreach (TabPage tab in tabControl1.TabPages) {
-                var hipsters = tab.Controls.OfType<Hipster>().First();
-                hipsters.preventEditing();
+                var unitControl = tab.Controls.OfType<IRunningControl>().FirstOrDefault();
+                if (unitControl != null) {
+                    unitControl.preventEditing();
+                }
             }
         }
 
-        private void enableWhileIdle()
-        {
-            /*
-            var result = port.Write(new Command(0,1,0));
-            Console.WriteLine(result);
-            */
+        private void enableWhileIdle() {
+
             foreach (TabPage tab in tabControl1.TabPages) {
-                var hipsters = tab.Controls.OfType<Hipster>().First();
-                hipsters.permittEditing();
+                var unitControl = tab.Controls.OfType<IRunningControl>().FirstOrDefault();
+                if (unitControl != null) {
+                    unitControl.permittEditing();
+                }
             }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e) {
+            var json = App.save();
+            var path = saveTo();
+            // Fails on abort
+            File.WriteAllText(path, json);
+        }
+
+        private void openButton_Click(object sender, EventArgs e) {
+            var d = openFile();
+            var units = App.open(d);
+            Console.WriteLine("Units -> " + units);
+
+            // Remove all current tabs
+            foreach(TabPage page in tabControl1.TabPages) {
+                var aggView = page.Controls.OfType<IRunningControl>().FirstOrDefault();
+                if (aggView != null) { 
+                    App.RemoveUnit(aggView.getUnit());
+                    tabControl1.TabPages.Remove(page);
+                }
+            }
+            // Add new tabs
+            units.ForEach( u => AddAgg(u) );
+        }
+
+        private string saveTo() {
+            var filePath = string.Empty;
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog()) {
+                saveFileDialog.Filter = "json files (*.json)|*.json";
+                saveFileDialog.FilterIndex = 0;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                    //Get the path of specified file
+                    filePath = saveFileDialog.FileName;
+                }
+            }
+            return filePath;
+        }
+
+        private string openFile() {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+
+                    using (StreamReader reader = new StreamReader(fileStream)) {
+                        fileContent = reader.ReadToEnd();
+                    }
+                }
+            }
+
+            Console.WriteLine("Path -> "+ filePath);
+            Console.WriteLine("Content -> "+ fileContent);
+            return fileContent;
         }
     }
 }

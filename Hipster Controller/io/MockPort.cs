@@ -45,7 +45,7 @@ namespace ionautics.io
         public Command Write(Command values) {
             var n = rand.Next(100);
             if (n == 23) {
-                values = errorCmd(values, "Invalid Message");
+               //values = errorCmd(values, "Invalid Message");
             }
             return values;
         }

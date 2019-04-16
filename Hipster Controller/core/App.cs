@@ -6,6 +6,9 @@ using System.Reactive.Subjects;
 using System.Reactive.Linq;
 using Newtonsoft.Json;
 using ionautics.view;
+using System.Drawing;
+using System.Text;
+using System.IO;
 
 namespace ionautics.core
 {
@@ -23,6 +26,11 @@ namespace ionautics.core
 
     public class App
     {
+        private static readonly StringBuilder errorLog = new StringBuilder();
+        private static readonly object syncLock = new object();
+
+        public static readonly Color ERROR_COLOR = Color.FromArgb(255, 200, 200);
+
         private static BehaviorSubject<bool> _running = new BehaviorSubject<bool>(false);
         private static BehaviorSubject<Tuple<int, int>> _units
             = new BehaviorSubject<Tuple<int, int>>(new Tuple<int, int>(0, 0));
@@ -58,7 +66,7 @@ namespace ionautics.core
                     list.Add(u);
                 }
                 else if (unit.type == "AGG") {
-                    var u = new Aggregate(unit.header, port, unit.address);
+                    var u = new HipsterAggregate(unit.header, port, unit.address);
                     u.IsActive = unit.IsActive;
                     list.Add(u);
                 }
@@ -96,19 +104,14 @@ namespace ionautics.core
         private static void updateUnits() {
             var active = units.Where(u => u.IsActive).Count();
             _units.OnNext(Tuple.Create(active, units.Count));
-            if (active == 0) {
-
-                Stop();
-            }
         }
 
         public static void Start() {
             var active = units.Where(u => u.IsActive).ToList();
             if (active.Count() > 0) {
                 active.ForEach(u => {
-                    var result = u.SetVal(1, 1);
-                    if (result.error) {
-                        LogError("Couldn't start unit -> " + u.tab + ". Message: " + result.message);
+                    if(!u.port.IsOpen()) {
+                        u.port.Open();
                     }
                 });
                 runner.Start(active, updaterObservable as IObserver<List<Unit>>);
@@ -120,15 +123,34 @@ namespace ionautics.core
             runner.Stop();
             _running.OnNext(false);
             units.Where(u => u.IsActive).ToList().ForEach(u => {
-                var result = u.SetVal(1, 0);
-                if(result.error) {
-                    LogError("Couldn't stop unit -> " + u.tab +". Message: "+ result.message);
+                if (u.port.IsOpen()){
+                    u.port.Close();
                 }
             });
+            writeLog(errorLog.ToString());
+            errorLog.Clear();
         }
 
         internal static void LogError(string message) {
             error.OnNext(message);
+        }
+
+        internal static void LogComError(Command result, IPort port, bool read) {
+            //"port, address, param, read, errormsg"
+            lock(syncLock) { 
+                errorLog.AppendLine($"{port.Name}, {result.address}, {result.parameter}, {read}, {result.message}");
+                if(errorLog.Length > 1000) {
+                    writeLog(errorLog.ToString());
+                    errorLog.Clear();
+                }
+            }
+        }
+
+        internal static void writeLog(string msg) {
+            Console.Write(msg);
+            using (StreamWriter w = File.AppendText("log.txt")) {
+                w.Write(msg);
+            }
         }
     }
 }

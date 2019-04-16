@@ -12,37 +12,53 @@ namespace ionautics
 {
     public partial class Controller : Form, IObserver<bool>
     {
+        IDisposable runningDisposable;
+        IDisposable unitsDisposable;
+        IDisposable errorDisposable;
         public Controller() {
             InitializeComponent();
         }
 
+        private void cleanup(object sender, FormClosingEventArgs e) {
+            Console.WriteLine("#### Program cleanup start");
+            if(App.IsRunning()) {
+                App.Stop();
+            }
+            runningDisposable?.Dispose();
+            unitsDisposable?.Dispose();
+            errorDisposable?.Dispose();
+            App.ports.cleanup();
+            Console.WriteLine("#### Program cleanup done");
+        }
+
         private void MainForm_Load(object sender, EventArgs e) {
-            App.running
+            runningDisposable = App.running
                 .ObserveOn(this)
                 .Subscribe(this);
 
-            App.unitCount
+            unitsDisposable = App.unitCount
                 .ObserveOn(this)
                 .Subscribe(pair => {
                     runToggle.Enabled = pair.Item1 > 0;
                     activeTabs.Text = $"There are {pair.Item1} out of {pair.Item2} active units.";
                 });
 
-            App.error
+            errorDisposable = App.error
                 .Skip(1)
                 .ObserveOn(this)
                 .Subscribe(msg => {
-                    MessageBox.Show(msg, "An Error Occured", MessageBoxButtons.OK);
+                    //MessageBox.Show(msg, "An Error Occured", MessageBoxButtons.OK);
+                    Console.WriteLine("Error -> " + msg);
                 });
 
 
-            AddAgg("Sync", 0, App.ports.GetPort("", 0, false), false);
-            AddAgg("Agg", 1, App.ports.GetPort("", 0, false), true);
             AddGraph();
+            AddAgg("Sync", 0, App.ports.GetPort("", 0, false), false);
+            AddAgg("Agg", 0, App.ports.GetPort("", 0, false), true);
+            this.FormClosing += cleanup;
         }
 
         private void closeTabClick(object sender, EventArgs e) {
-            Console.WriteLine("clicked " + sender);
             var aggView = tabControl1.SelectedTab.Controls.OfType<IRunningControl>().FirstOrDefault();
             App.RemoveUnit(aggView.getUnit());
             tabControl1.TabPages.Remove(tabControl1.SelectedTab);
@@ -65,7 +81,7 @@ namespace ionautics
         {
             Unit unit;
             if (isHipster) {
-                unit = new Aggregate(label, port, address);
+                unit = new HipsterAggregate(label, port, address);
             }
             else {
                 unit = new SyncAggregate(label, port, address);
@@ -153,12 +169,15 @@ namespace ionautics
         private void saveButton_Click(object sender, EventArgs e) {
             var json = App.save();
             var path = saveTo();
-            // Fails on abort
-            File.WriteAllText(path, json);
+            if(path != string.Empty) { 
+                File.WriteAllText(path, json);
+            }
         }
 
         private void openButton_Click(object sender, EventArgs e) {
             var d = openFile();
+            if (d == string.Empty) { return; }
+
             var units = App.open(d);
             Console.WriteLine("Units -> " + units);
 

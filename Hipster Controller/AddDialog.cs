@@ -88,5 +88,9 @@ namespace ionautics
         private void radioHipster_CheckedChanged(object sender, EventArgs e) {
             IsHipster = radioHipster.Checked;
         }
+
+        private void Button1_Click(object sender, EventArgs e) {
+            Close();
+        }
     }
 }

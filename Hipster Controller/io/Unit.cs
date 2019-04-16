@@ -43,6 +43,20 @@ namespace ionautics.io
             }
             var command = new Command(address, id, value);
             var result = port.Write(command);
+            Parameters[id].error = result.error;
+            if (!result.error) {
+                Parameters[id].value = result.value;
+            }
+            return result;
+        }
+
+        public Command ReadVal(int id) {
+            if (!port.IsOpen()) {
+                port.Open();
+            }
+            var command = new Command(address, id, 0);
+            var result = port.Read(command);
+            Parameters[id].error = result.error;
             if (!result.error) {
                 Parameters[id].value = result.value;
             }
@@ -57,12 +71,13 @@ namespace ionautics.io
             Parameters.Values.ToList().ForEach(p => {
                 if (inactiveStart == -1 || p.id < inactiveStart || p.id > inactiveEnd) {
                     var result = port.Read(new Command(address, p.id, p.value));
+                    p.error = result.error;
                     if (!result.error) {
                         p.value = result.value;
                     }
                     else {
                         App.LogError(result.message);
-                        IsActive = false;
+                        App.LogComError(result, port, true);
                     }
                 }
             });

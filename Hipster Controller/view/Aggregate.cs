@@ -6,7 +6,7 @@ using ionautics.units;
 
 namespace ionautics.view
 {
-    public class Aggregate : Unit
+    public class HipsterAggregate : Unit
     {
         private readonly List<Parameter> _parameters = new List<Parameter> {
             new Parameter(1, "Pulse On/Off", 1, 0, "Pulse", true, 0),
@@ -34,7 +34,7 @@ namespace ionautics.view
         public string header { get; }
         public override UnitType type => UnitType.AGG;
 
-        public Aggregate(string tab, IPort port, int address) : base(tab, port, address) {
+        public HipsterAggregate(string tab, IPort port, int address) : base(tab, port, address) {
             header = tab;
             Parameters = _parameters.ToDictionary(l => l.id, l => l);
         }

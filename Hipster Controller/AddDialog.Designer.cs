@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.OkButton = new System.Windows.Forms.Button();
             this.portNameBox = new System.Windows.Forms.ComboBox();
             this.TabName = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.radioSync = new System.Windows.Forms.RadioButton();
             this.radioHipster = new System.Windows.Forms.RadioButton();
@@ -44,23 +42,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.bpsBox = new System.Windows.Forms.ComboBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.addDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.addDialogBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // OkButton
-            // 
-            this.OkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OkButton.Location = new System.Drawing.Point(570, 504);
-            this.OkButton.Margin = new System.Windows.Forms.Padding(20);
-            this.OkButton.Name = "OkButton";
-            this.OkButton.Size = new System.Drawing.Size(120, 46);
-            this.OkButton.TabIndex = 0;
-            this.OkButton.Text = "Ok";
-            this.OkButton.UseVisualStyleBackColor = true;
-            this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // portNameBox
             // 
@@ -85,25 +75,17 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.OkButton, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(710, 570);
             this.tableLayoutPanel1.TabIndex = 3;
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 473);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(349, 94);
-            this.flowLayoutPanel2.TabIndex = 1;
             // 
             // panel1
             // 
@@ -130,8 +112,8 @@
             this.radioSync.AutoSize = true;
             this.radioSync.Location = new System.Drawing.Point(241, 411);
             this.radioSync.Name = "radioSync";
-            this.radioSync.Size = new System.Drawing.Size(115, 36);
-            this.radioSync.TabIndex = 11;
+            this.radioSync.Size = new System.Drawing.Size(93, 35);
+            this.radioSync.TabIndex = 6;
             this.radioSync.Text = "Sync";
             this.radioSync.UseVisualStyleBackColor = true;
             this.radioSync.CheckedChanged += new System.EventHandler(this.radioSync_CheckedChanged);
@@ -142,8 +124,8 @@
             this.radioHipster.Checked = true;
             this.radioHipster.Location = new System.Drawing.Point(241, 369);
             this.radioHipster.Name = "radioHipster";
-            this.radioHipster.Size = new System.Drawing.Size(142, 36);
-            this.radioHipster.TabIndex = 10;
+            this.radioHipster.Size = new System.Drawing.Size(119, 35);
+            this.radioHipster.TabIndex = 5;
             this.radioHipster.TabStop = true;
             this.radioHipster.Text = "Hipster";
             this.radioHipster.UseVisualStyleBackColor = true;
@@ -154,7 +136,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(139, 392);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 32);
+            this.label5.Size = new System.Drawing.Size(75, 31);
             this.label5.TabIndex = 9;
             this.label5.Text = "Type";
             // 
@@ -163,7 +145,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(98, 304);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(119, 32);
+            this.label4.Size = new System.Drawing.Size(114, 31);
             this.label4.TabIndex = 8;
             this.label4.Text = "Address";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -174,7 +156,7 @@
             this.addressNumber.MaxLength = 200;
             this.addressNumber.Name = "addressNumber";
             this.addressNumber.Size = new System.Drawing.Size(350, 38);
-            this.addressNumber.TabIndex = 7;
+            this.addressNumber.TabIndex = 4;
             this.addressNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.addressNumber_KeyPress);
             // 
             // label3
@@ -182,7 +164,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(68, 234);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(149, 32);
+            this.label3.Size = new System.Drawing.Size(142, 31);
             this.label3.TabIndex = 6;
             this.label3.Text = "Baud Rate";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -192,7 +174,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(72, 163);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(145, 32);
+            this.label2.Size = new System.Drawing.Size(138, 31);
             this.label2.TabIndex = 5;
             this.label2.Text = "Port name";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -202,7 +184,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(75, 92);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 32);
+            this.label1.Size = new System.Drawing.Size(135, 31);
             this.label1.TabIndex = 4;
             this.label1.Text = "Tab name";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -219,13 +201,47 @@
             this.bpsBox.Size = new System.Drawing.Size(350, 39);
             this.bpsBox.TabIndex = 3;
             // 
+            // panel2
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.panel2, 2);
+            this.panel2.Controls.Add(this.button2);
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(3, 473);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(704, 94);
+            this.panel2.TabIndex = 3;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(366, 22);
+            this.button1.Margin = new System.Windows.Forms.Padding(20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(183, 46);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Cancel";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
             // addDialogBindingSource
             // 
             this.addDialogBindingSource.DataSource = typeof(ionautics.AddDialog);
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Location = new System.Drawing.Point(579, 22);
+            this.button2.Margin = new System.Windows.Forms.Padding(20);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(94, 46);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Ok";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.OkButton_Click);
+            // 
             // AddDialog
             // 
-            this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 570);
@@ -238,18 +254,16 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.addDialogBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.ComboBox portNameBox;
         private System.Windows.Forms.TextBox TabName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.ComboBox bpsBox;
         private System.Windows.Forms.BindingSource addDialogBindingSource;
         private System.Windows.Forms.Panel panel1;
@@ -261,5 +275,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RadioButton radioSync;
         private System.Windows.Forms.RadioButton radioHipster;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

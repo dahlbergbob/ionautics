@@ -23,7 +23,6 @@ namespace ionautics.core
 
         private List<Unit> Poll(List<Unit> activeUnits) {
             var stillActive = activeUnits.Where(u => u.IsActive).ToList();
-            Console.WriteLine("Poll -> " + stillActive.Count());
             stillActive.ForEach(unit => {
                 unit.Measure();
             });

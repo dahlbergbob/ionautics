@@ -16,6 +16,13 @@ namespace ionautics.io {
             get => _port.BaudRate;
         }
 
+        internal void updateBaudRate(int baudrate) {
+            if(_port.IsOpen) {
+                _port.Close();
+            }
+            _port.BaudRate = baudrate;
+        }
+
         public Port(SerialPort port) {
             _port = port;
             _port.NewLine = "\n";
@@ -55,12 +62,14 @@ namespace ionautics.io {
         }
 
         public bool Open() {
+            Console.WriteLine("##### OPEN");
             _port.Open();
             return IsOpen();
         }
 
         public void Close() {
             _port.Close();
+            Console.WriteLine("##### CLOSE");
         }
     }
 }

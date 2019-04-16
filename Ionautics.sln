@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ionautics", "Hipster Controller\ionautics.csproj", "{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}"
 EndProject
@@ -11,16 +11,19 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Temp|Any CPU = Temp|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}.Temp|Any CPU.ActiveCfg = Temp|Any CPU
+		{8DCE1DF9-6BD9-4CBE-97BB-741539F4335E}.Temp|Any CPU.Build.0 = Temp|Any CPU
 		{4AF5AC0A-8986-42E6-BEA6-015A6E64F01D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AF5AC0A-8986-42E6-BEA6-015A6E64F01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AF5AC0A-8986-42E6-BEA6-015A6E64F01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AF5AC0A-8986-42E6-BEA6-015A6E64F01D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF5AC0A-8986-42E6-BEA6-015A6E64F01D}.Temp|Any CPU.ActiveCfg = Temp|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

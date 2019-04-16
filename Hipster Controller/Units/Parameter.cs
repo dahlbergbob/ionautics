@@ -9,6 +9,8 @@
         public int value { get; set; }
         public bool writable { get; }
 
+        public bool error = false;
+
         public Parameter(int id, string name, int max, int min, string unit, bool writable, int value)
         {
             this.id = id;

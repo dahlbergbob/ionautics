@@ -9,12 +9,13 @@ namespace ionautics.core
     public class PortModule {
 
         private readonly List<IPort> _ports = new List<IPort>();
-        private bool serial = false;
+        private bool serial = true;
 
         public PortModule() {
             foreach(string name in SerialPort.GetPortNames()) {
                 var p = new Port(new SerialPort(name, 38400, Parity.None, 8, StopBits.One));
                 _ports.Add(p);
+                Console.WriteLine("Port is open -> " + p.IsOpen());
             }
         }
 
@@ -27,6 +28,16 @@ namespace ionautics.core
             }
         }
 
+        internal void cleanup() {
+            _ports.ForEach(p => {
+                if(p.IsOpen()) {
+                    Console.WriteLine("Closing port -> " + p.Name);
+                    p.Close();
+                }
+            });
+            Console.WriteLine("Closing Done");
+        }
+
         public string[] GetNames() {
             return _ports.Select(p => p.Name).ToArray();
         }
@@ -35,11 +46,7 @@ namespace ionautics.core
             var found = _ports.First(p => p.Name == name);
             if (found != null) {
                 if(serial) {
-                    ((SerialPort)found).PortName = name;
-                    ((SerialPort)found).BaudRate = baudrate;
-                }
-                else {
-                    ((MockPort)found).Name = name;
+                    ((Port)found).updateBaudRate(baudrate);
                 }
             }
         }

@@ -6,6 +6,8 @@ using ionautics.view;
 using ionautics.io;
 using ionautics.core;
 using System.Reactive.Linq;
+using System.Drawing;
+using ionautics.units;
 
 namespace ionautics
 {
@@ -49,63 +51,74 @@ namespace ionautics
         }
 
         private void refreshBurst() {
-            f1.Text = unit.Parameters[20].value.ToString();
-            t1.Text = unit.Parameters[21].value.ToString();
-            n1.Text = unit.Parameters[22].value.ToString();
+            setValue(f1, unit.Parameters[20]);
+            setValue(t1, unit.Parameters[21]);
+            setValue(n1, unit.Parameters[22]);
 
-            f2.Text = unit.Parameters[23].value.ToString();
-            t2.Text = unit.Parameters[24].value.ToString();
-            n2.Text = unit.Parameters[25].value.ToString();
+            setValue(f2, unit.Parameters[23]);
+            setValue(t2, unit.Parameters[24]);
+            setValue(n2, unit.Parameters[25]);
 
-            f3.Text = unit.Parameters[26].value.ToString();
-            t3.Text = unit.Parameters[27].value.ToString();
-            n3.Text = unit.Parameters[28].value.ToString();
+            setValue(f3, unit.Parameters[26]);
+            setValue(t3, unit.Parameters[27]);
+            setValue(n3, unit.Parameters[28]);
 
-            f4.Text = unit.Parameters[29].value.ToString();
-            t4.Text = unit.Parameters[30].value.ToString();
-            n4.Text = unit.Parameters[31].value.ToString();
+            setValue(f4, unit.Parameters[29]);
+            setValue(t4, unit.Parameters[30]);
+            setValue(n4, unit.Parameters[31]);
 
-            f5.Text = unit.Parameters[32].value.ToString();
-            t5.Text = unit.Parameters[33].value.ToString();
-            n5.Text = unit.Parameters[34].value.ToString();
+            setValue(f5, unit.Parameters[32]);
+            setValue(t5, unit.Parameters[33]);
+            setValue(n5, unit.Parameters[34]);
 
-            f6.Text = unit.Parameters[35].value.ToString();
-            t6.Text = unit.Parameters[36].value.ToString();
-            n6.Text = unit.Parameters[37].value.ToString();
+            setValue(f6, unit.Parameters[35]);
+            setValue(t6, unit.Parameters[36]);
+            setValue(n6, unit.Parameters[37]);
 
-            f7.Text = unit.Parameters[38].value.ToString();
-            t7.Text = unit.Parameters[39].value.ToString();
-            n7.Text = unit.Parameters[40].value.ToString();
+            setValue(f7, unit.Parameters[38]);
+            setValue(t7, unit.Parameters[39]);
+            setValue(n7, unit.Parameters[40]);
 
-            f8.Text = unit.Parameters[41].value.ToString();
-            t8.Text = unit.Parameters[42].value.ToString();
-            n8.Text = unit.Parameters[43].value.ToString();
+            setValue(f8, unit.Parameters[41]);
+            setValue(t8, unit.Parameters[42]);
+            setValue(n8, unit.Parameters[43]);
         }
 
         private void refreshDelay() {
-            dFreq.Text = unit.Parameters[50].value.ToString();
-            dt1.Text = unit.Parameters[51].value.ToString();
+            setValue(dFreq, unit.Parameters[50]);
+            setValue(dt1, unit.Parameters[51]);
 
-            dt2.Text = unit.Parameters[52].value.ToString();
-            ddt2.Text = unit.Parameters[53].value.ToString();
+            setValue(dt2, unit.Parameters[52]);
+            setValue(ddt2, unit.Parameters[53]);
 
-             dt3.Text = unit.Parameters[54].value.ToString();
-            ddt3.Text = unit.Parameters[55].value.ToString();
+            setValue(dt3, unit.Parameters[54]);
+            setValue(ddt3, unit.Parameters[55]);
 
-             dt4.Text = unit.Parameters[56].value.ToString();
-            ddt4.Text = unit.Parameters[57].value.ToString();
+            setValue(dt4, unit.Parameters[56]);
+            setValue(ddt4, unit.Parameters[57]);
 
-             dt5.Text = unit.Parameters[58].value.ToString();
-            ddt5.Text = unit.Parameters[59].value.ToString();
+            setValue(dt5, unit.Parameters[58]);
+            setValue(ddt5, unit.Parameters[59]);
 
-             dt6.Text = unit.Parameters[60].value.ToString();
-            ddt6.Text = unit.Parameters[61].value.ToString();
+            setValue(dt6, unit.Parameters[60]);
+            setValue(ddt6, unit.Parameters[61]);
 
-             dt7.Text = unit.Parameters[62].value.ToString();
-            ddt7.Text = unit.Parameters[63].value.ToString();
+            setValue(dt7, unit.Parameters[62]);
+            setValue(ddt7, unit.Parameters[63]);
 
-             dt8.Text = unit.Parameters[64].value.ToString();
-            ddt8.Text = unit.Parameters[65].value.ToString();
+            setValue(dt8, unit.Parameters[64]);
+            setValue(ddt8, unit.Parameters[65]);
+        }
+
+
+        private void setValue(TextBox txt, Parameter param) {
+            if (param.error) {
+                txt.BackColor = App.ERROR_COLOR;
+            }
+            else {
+                txt.BackColor = Color.White;
+                txt.Text = param.value.ToString();
+            }
         }
 
         private void closeButton_Click(object sender, EventArgs e) {
@@ -134,6 +147,7 @@ namespace ionautics
                 var result = unit.SetVal(2, value);
                 if(result.error) {
                     App.LogError("Couldnt set mode on sync");
+                    App.LogComError(result, unit.port, false);
                 }
                 else if(result.value == value) {
                     var mode = value == 0 ? "burst" : "delay";
@@ -151,6 +165,7 @@ namespace ionautics
             var result = unit.SetVal(3, value);
             if (result.error) {
                 App.LogError("Couldnt set loop mode.");
+                App.LogComError(result, unit.port, false);
             }
             else if (result.value == value) {
                 Console.WriteLine("Loop mode changed to " + value + ".");
@@ -160,6 +175,19 @@ namespace ionautics
                 loopModeCombo.SelectedIndexChanged -= loopModeCombo_SelectedIndexChanged;
                 loopModeCombo.SelectedIndex = result.value;
                 loopModeCombo.SelectedIndexChanged += loopModeCombo_SelectedIndexChanged;
+            }
+        }
+
+        private void on_KeyUp(object sender, KeyEventArgs e) {
+            if(e.KeyCode == Keys.Enter) {
+                var textBox = (TextBox)sender;
+                int pid = 0;
+                var success = int.TryParse(textBox.Text, out int val);
+                success = success && int.TryParse(textBox.Tag.ToString(), out pid);
+                if (success) {
+                    var result = unit.SetVal(pid, val);
+                    textBox.Text = result.value.ToString();
+                }
             }
         }
     }
